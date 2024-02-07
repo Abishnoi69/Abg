@@ -2,13 +2,13 @@ from functools import partial, wraps
 from logging import getLogger
 from typing import Union
 
-import pyrogram
+import Pyrofork
 from cachetools import TTLCache
-from pyrogram import Client
-from pyrogram.enums import ChatMemberStatus, ChatType
-from pyrogram.errors import UserNotParticipant
-from pyrogram.methods import Decorators
-from pyrogram.types import CallbackQuery, Message
+from Pyrofork import Client
+from Pyrofork.enums import ChatMemberStatus, ChatType
+from Pyrofork.errors import UserNotParticipant
+from Pyrofork.methods import Decorators
+from Pyrofork.types import CallbackQuery, Message
 
 from Abg.config import DEVS
 
@@ -20,15 +20,15 @@ ANON = TTLCache(maxsize=250, ttl=30)
 
 
 async def anonymous_admin_verification(
-    self, CallbackQuery: pyrogram.types.CallbackQuery
+    self, CallbackQuery: Pyrofork.types.CallbackQuery
 ):
     if int(
         f"{CallbackQuery.message.chat.id}{CallbackQuery.data.split('.')[1]}"
     ) not in set(ANON.keys()):
         try:
             await CallbackQuery.message.edit_text("ʙᴜᴛᴛᴏɴ ʜᴀs ʙᴇᴇɴ ᴇxᴘɪʀᴇᴅ.")
-        except pyrogram.errors.RPCError:
-            with contextlib.suppress(pyrogram.errors.RPCError):
+        except Pyrofork.errors.RPCError:
+            with contextlib.suppress(Pyrofork.errors.RPCError):
                 await CallbackQuery.message.delete()
         return
     cb = ANON.pop(
@@ -36,8 +36,8 @@ async def anonymous_admin_verification(
     )
     member = await CallbackQuery.message.chat.get_member(CallbackQuery.from_user.id)
     if member.status not in (
-        pyrogram.enums.ChatMemberStatus.OWNER,
-        pyrogram.enums.ChatMemberStatus.ADMINISTRATOR,
+        Pyrofork.enums.ChatMemberStatus.OWNER,
+        Pyrofork.enums.ChatMemberStatus.ADMINISTRATOR,
     ):
         return await CallbackQuery.answer(
             "ʏᴏᴜ ɴᴇᴇᴅ ᴛᴏ ʙᴇ ᴀɴ ᴀᴅᴍɪɴ ᴛᴏ ᴅᴏ ᴛʜɪs.", show_alert=True
@@ -47,7 +47,7 @@ async def anonymous_admin_verification(
         try:
             await CallbackQuery.message.delete()
             await cb[1](self, cb[0])
-        except pyrogram.errors.exceptions.forbidden_403.ChatAdminRequired:
+        except Pyrofork.errors.exceptions.forbidden_403.ChatAdminRequired:
             return await CallbackQuery.message.edit_text(
                 "ɪ ᴍᴜsᴛ ʙᴇ ᴀᴅᴍɪɴ ᴛᴏ ᴇxᴇᴄᴜᴛᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ",
             )
@@ -111,10 +111,10 @@ def adminsOnly(
 
             if not msg.from_user:
                 ANON[int(f"{msg.chat.id}{msg.id}")] = (msg, func, permissions)
-                keyboard = pyrogram.types.InlineKeyboardMarkup(
+                keyboard = Pyrofork.types.InlineKeyboardMarkup(
                     [
                         [
-                            pyrogram.types.InlineKeyboardButton(
+                            Pyrofork.types.InlineKeyboardButton(
                                 text="✅ ᴘʀᴏᴠᴇ ɪᴅᴇɴᴛɪᴛʏ",
                                 callback_data=f"anon.{msg.id}",
                             ),
@@ -129,9 +129,9 @@ def adminsOnly(
             try:
                 bot = await chat.get_member(abg.me.id)
                 user = await chat.get_member(message.from_user.id)
-            except pyrogram.errors.exceptions.bad_request_400.ChatAdminRequired:
+            except Pyrofork.errors.exceptions.bad_request_400.ChatAdminRequired:
                 return await sender(f"ɪ ᴍᴜsᴛ ʙᴇ ᴀᴅᴍɪɴ ᴛᴏ ᴇxᴇᴄᴜᴛᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ")
-            except pyrogram.errors.exceptions.forbidden_403.ChatAdminRequired:
+            except Pyrofork.errors.exceptions.forbidden_403.ChatAdminRequired:
                 return await sender(f"ɪ ᴍᴜsᴛ ʙᴇ ᴀᴅᴍɪɴ ᴛᴏ ᴇxᴇᴄᴜᴛᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ")
             except UserNotParticipant:
                 return await sender(
@@ -275,9 +275,9 @@ def adminsOnly(
                         return await func(abg, message, *args, **kwargs)
 
         self.add_handler(
-            pyrogram.handlers.CallbackQueryHandler(
+            Pyrofork.handlers.CallbackQueryHandler(
                 anonymous_admin_verification,
-                pyrogram.filters.regex("^anon."),
+                Pyrofork.filters.regex("^anon."),
             ),
         )
         return wrapper

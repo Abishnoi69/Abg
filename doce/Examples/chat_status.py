@@ -1,5 +1,5 @@
-from pyrogram import Client
-from pyrogram.types import Message
+from Pyrofork import Client
+from Pyrofork.types import Message
 
 from . import app
 

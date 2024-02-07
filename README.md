@@ -7,13 +7,13 @@
 ### Requirements 
 
 - Python 3.7 ᴏʀ higher.
-- A [ᴛᴇʟᴇɢʀᴀᴍ ᴀᴘɪ ᴋᴇʏ](https://docs.pyrogram.org/intro/setup#api-keys).
+- A [ᴛᴇʟᴇɢʀᴀᴍ ᴀᴘɪ ᴋᴇʏ](https://docs.Pyrofork.org/intro/setup#api-keys).
 - ᴀʙɢ [ᴄᴏɴғɪɢ](https://github.com/Abishnoi69/Abg#configuratoins).
 
 ### Installing :
 
 ```bash
-pip install -U git+https://github.com/Abishnoi69/Abg@dev
+pip install -U git+https://github.com/Abishnoi69/Abg@Pyrofork
 or
 pip install -U Abg
 ```
@@ -24,8 +24,8 @@ pip install -U Abg
 
 #### sᴇᴛᴜᴘ
 ```python
-from pyrogram import filters, Client
-from pyrogram.types import CallbackQuery, Message
+from Pyrofork import filters, Client
+from Pyrofork.types import CallbackQuery, Message
 from Abg import patch  # type : ignore
 from Abg.helpers import ikb
 
@@ -51,8 +51,8 @@ async def hello(c: Client, q: CallbackQuery):
 
 ```python
 from Abg import patch  # all patch
-from pyrogram.types import Message
-from pyrogram import Client
+from Pyrofork.types import Message
+from Pyrofork import Client
 
 app = Client("my_account")
 

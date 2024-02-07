@@ -4,9 +4,9 @@ from time import perf_counter, time
 from typing import List
 
 from cachetools import TTLCache
-from pyrogram.enums import ChatMembersFilter
-from pyrogram.types import CallbackQuery
-from pyrogram.types.messages_and_media.message import Message
+from Pyrofork.enums import ChatMembersFilter
+from Pyrofork.types import CallbackQuery
+from Pyrofork.types.messages_and_media.message import Message
 
 LOGGER = getLogger(__name__)
 

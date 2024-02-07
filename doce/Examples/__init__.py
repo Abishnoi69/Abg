@@ -1,4 +1,4 @@
-from pyrogram import Client
+from Pyrofork import Client
 
 from Abg import patch  # type : ignore
 
